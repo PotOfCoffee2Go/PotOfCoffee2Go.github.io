@@ -1,0 +1,67 @@
+<!doctype html>
+<html><head><script>
+
+// Fetches resources from network
+class InetFetch {
+  constructor () {
+    // Fetch from local server when dev
+    if (window.location.href.match(/localhost/)) {
+      this.domain = '';
+    }
+    // Otherwise get resources from gist
+    else {
+      this.domain = 'https://gist.githubusercontent.com/PotOfCoffee2Go/' +
+        '3c0978370277dae7da27d2137014f5a3/raw/';
+    }
+  }
+
+  // Fetch the URI path and return the content as text
+  text(filepath) {
+    return fetch(filepath).then(res => res.ok
+      ? Promise.resolve(res.text())
+      : Promise.reject(`HTTP error: (${res.status}) - ${res.statusText}\n${res.url}`));
+  }
+
+  // Fetch the URI path and return the content as JSON
+  json(filepath) {
+    return fetch(filepath).then(res => res.ok
+      ? Promise.resolve(res.json())
+      : Promise.reject(`HTTP error: (${res.status}) - ${res.statusText}\n${res.url}`));
+  }
+
+  // Create and load Html elements
+  element(tag, appendTo, text) {
+    let elem =  document.createElement(tag);
+    elem.innerHTML = text;
+    appendTo.appendChild(elem);
+  }
+
+  // Get document scripts, css, html
+  resources() {
+    let loader = this.domain + 'loader.js', engine = this.domain + 'engine.js';
+    let game =   this.domain + 'game.js',   style  = this.domain + 'game.css';
+    let html =   this.domain + 'game.html';
+
+    return Promise.all([
+      this.text(loader), this.text(engine), this.text(game), this.text(style),
+      this.text(html)
+      ]).then(texts => {
+        this.element('script', document.head, texts[0]);
+        this.element('script', document.head, texts[1]);
+        this.element('script', document.head, texts[2]);
+        this.element('style',  document.head, texts[3]);
+        this.element('div',    document.body, texts[4]);
+      });
+  }
+}
+
+// ------------------
+// Conway's Game of Life
+// Game of life will be written by extending
+//  the Agent and World javascript classes.
+var Gol;
+window.onload = () => {
+  (new InetFetch).resources().then(() => { Gol = new Game(30, 80); })
+}
+
+</script></head><body></body></html>
