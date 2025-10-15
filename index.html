@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<!--
+source: https://gist.github.com/PotOfCoffee2Go/fe60cfa7382dc88e6ad901178b343649
+author: PotOfCoffee2Go
+license: MIT
+-->
+
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="PotOfCoffee2Go">
+
+<script>
+	// Config
+	const title = '<h2>Placeholder!</h2>';
+
+	// Sections and links to web sites
+	const items = [];
+</script>
+
+<style>
+/* colors - this is a blueish theme */
+:root {
+	--body-font-size: 22px;
+
+	--body-color: #87ceeb;
+	--body-bg-color: #08053f;
+}
+
+
+html, body {
+	color: var(--body-color);
+	background: var(--body-bg-color);
+	font-size: var(--body-font-size);
+}
+</style>
+
+<script>
+window.onload = () => {
+	// Parameters passed in URL querystring
+	const queryParams = new URLSearchParams(location.search);
+
+	// Page title
+	document.title = title.replace(/(<([^>]+)>)/ig, ''); // Remove tags
+	document.getElementById('title').innerHTML = title;
+}
+</script>
+</head>
+
+<body>
+	<div id="title" /></div>
+
+	 <!-- add some space to bottom of page so scrolling is sane -->
+	<div style="height:70vh;"></div>
+</body>
+
+</html>
